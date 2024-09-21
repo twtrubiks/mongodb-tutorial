@@ -8,11 +8,11 @@
 
 ## 教學
 
+使用 [mongo](https://hub.docker.com/_/mongo) image 以及使用 [mongo-express](https://github.com/mongo-express/mongo-express) GUI tool.
+
 [docker-compose.yml](docker-compose.yml)
 
 ```yml
-version: '3.8'
-
 services:
 
     db:
@@ -21,11 +21,23 @@ services:
         container_name: mongodb
         ports:
             - "27017:27017"
+        # command: [--auth]
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: password
         volumes:
             - mongo_data:/data/db
+
+    mongo-express:
+        image: mongo-express
+        restart: always
+        ports:
+            - 8081:8081
+        environment:
+            ME_CONFIG_MONGODB_ADMINUSERNAME: root
+            ME_CONFIG_MONGODB_ADMINPASSWORD: password
+            ME_CONFIG_MONGODB_URL: mongodb://root:password@db:27017/
+            ME_CONFIG_BASICAUTH: false
 
 volumes:
   mongo_data:
@@ -287,7 +299,7 @@ db.movies.deleteOne( { _id: ObjectId("64741819dcd1cd7e37d54731") } )
 db.movies.findOne( { _id: ObjectId("64741819dcd1cd7e37d54731") } )
 ```
 
-## MongoDB GUI TOOL
+## MongoDB GUI TOOL - MongoDB Compass
 
 * [Youtube Tutorial - MongoDB Compass (GUI) 以及 PyMongo - Part 2](https://youtu.be/yzovQ8WXwiA)
 
@@ -300,6 +312,16 @@ db.movies.findOne( { _id: ObjectId("64741819dcd1cd7e37d54731") } )
 如果順利登入的話, 會看到類似的介面
 
 ![alt tag](https://i.imgur.com/etaKtAn.png)
+
+## MongoDB GUI TOOL - mongo-express
+
+另一種選擇  [mongo-express](https://github.com/mongo-express/mongo-express) GUI tool.
+
+直接進入 [http://0.0.0.0:8081/](http://0.0.0.0:8081/)
+
+![alt tag](https://i.imgur.com/yDFflbZ.png)
+
+可以自己選擇喜歡那款 GUI TOOL
 
 ## PyMongo
 

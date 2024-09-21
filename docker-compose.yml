@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
 
     db:
@@ -14,6 +12,17 @@ services:
             MONGO_INITDB_ROOT_PASSWORD: password
         volumes:
             - mongo_data:/data/db
+
+    mongo-express:
+        image: mongo-express
+        restart: always
+        ports:
+            - 8081:8081
+        environment:
+            ME_CONFIG_MONGODB_ADMINUSERNAME: root
+            ME_CONFIG_MONGODB_ADMINPASSWORD: password
+            ME_CONFIG_MONGODB_URL: mongodb://root:password@db:27017/
+            ME_CONFIG_BASICAUTH: false
 
 volumes:
   mongo_data:
